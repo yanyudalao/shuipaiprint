@@ -6,8 +6,8 @@
 
 整个文件分为：
 
-- 人员名单.txt + name(company).py + name(company)文件夹 + 台卡模板.jpg
-- 公司名单.txt + company.py + company(文件夹) + 台卡模板.jpg
+- 名单.txt + name+company.py + 台卡模板.jpg
+运行后会生成1个输出文件夹存放图像
 
 **每组的文件缺一不可**
 
