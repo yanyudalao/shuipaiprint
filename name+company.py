@@ -12,9 +12,15 @@ def draw(moban_path,location,conment,str_volume_1=200,str_volume_2=100):
     setFont2 = ImageFont.truetype('C:/windows/fonts/simhei.ttf',str_volume_2) #次行
     if os.path.exists('输出文件夹') == False:
         os.mkdir("输出文件夹")
+        print("【输出文件夹】不存在"
+              "创建【输出文件夹】完毕")
     for i in conment:
         image = Image.open(moban_path)
-        name,company = i.split(",")[0],i.split(",")[1]
+        try:
+            name,company = i.split(",")[0],i.split(",")[1]
+        except:
+            print(f'【{i}】格式不对，跳过')
+            continue
         draw_name,draw_company = str_space(name).center(6,'　'),str_space(company).center(10,'　')
         draw_txt = ImageDraw.Draw(image)
         draw_txt.text((location[0],location[1]), draw_name , font=setFont, fill=fillColor, direction=None)
@@ -25,7 +31,7 @@ def draw(moban_path,location,conment,str_volume_1=200,str_volume_2=100):
         draw_txt.text((location[2],location[3]), draw_company , font=setFont2, fill=fillColor, direction=None)
         image.save(f'{os.getcwd()}\\输出文件夹\\{company}_{name}.jpg')
         print(f'输出【{company}_{name}.jpg】完成')
-
+    print("全部打印完毕")
 
 def location(moban_path,*args):
     '''确定位置函数,
@@ -55,7 +61,10 @@ def conment(txt_path=''):
     try:
         f = open(txt_path, encoding='utf-8')
     except:
-        return "文档路径出错"
+        f = open(txt_path, 'w')
+        print("文档路径出错，已创建新文件【人员名单(可带公司名称)】，请在该文件内添加打印内容，然后重新运行程序")
+        input("按任意键结束")
+        return
     for i in f.readlines():
         b=i.replace(" ", "").replace("\t","").strip()
         conment_list.append(b)
@@ -70,5 +79,18 @@ def str_space(string):
 txt_path = os.getcwd() + '\\' + '人员名单(可带公司名称).txt'
 moban_path = os.getcwd() + '\\' + '台卡模板.jpg'
 
+print("说明："
+      "本文件会使用当前路径下的【人员名单(可带公司名称).txt】读取文件"
+      "和在【输出文件夹】内生成需要的文件"
+      "如果不存在，会自动生成"
+      "名单填写方式是一行一个【人名,公司名(可不填),】看准，是有英文标点的逗号的"
+      "必须：还要一个【台卡模板.jpg】文件和本程序放在一起"
+      "如果看不懂，请再读一遍")
+input("看完了就按任意键开始")
+if os.path.exists(moban_path) == False:
+    print('【台卡模板.jpg】不存在！！！请再读10遍说明')
+    input("请关闭程序")
 draw(moban_path,location(moban_path,30,60,30,70),conment(txt_path))
+
+
 
